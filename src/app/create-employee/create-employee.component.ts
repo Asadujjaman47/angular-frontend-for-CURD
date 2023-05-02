@@ -1,3 +1,4 @@
+import { Employee } from './../employee';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./create-employee.component.css']
 })
 export class CreateEmployeeComponent {
+
+  employee : Employee = new Employee();
+
+  onSubmit() {
+    console.log(this.employee);
+  }
 
 }
