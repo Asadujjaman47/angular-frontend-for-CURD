@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-employee',
@@ -14,7 +14,8 @@ export class UpdateEmployeeComponent {
   id !: number;
 
   constructor(private employeeService: EmployeeService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private router : Router) {
       this.id = this.route.snapshot.params['id'];
       this.employeeService.getEmployeeById(this.id).subscribe(data => {
         this.employee = data;
@@ -23,10 +24,16 @@ export class UpdateEmployeeComponent {
     }
 
 
-
   onSubmit() {
-    console.log(this.employee);
+    // console.log(this.employee);
 
+    this.employeeService.updateEmployee(this.id, this.employee).subscribe( data => {
+      this.goToEmployeeList();
+    }, error => console.log(error));
+  }
+
+  goToEmployeeList() {
+    this.router.navigate(['/employees']);
   }
 
 }
