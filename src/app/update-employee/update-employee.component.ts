@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-employee',
@@ -11,25 +11,22 @@ import { Router } from '@angular/router';
 export class UpdateEmployeeComponent {
 
   employee : Employee = new Employee();
+  id !: number;
 
   constructor(private employeeService: EmployeeService,
-    private router: Router) { }
+    private route: ActivatedRoute) {
+      this.id = this.route.snapshot.params['id'];
+      this.employeeService.getEmployeeById(this.id).subscribe(data => {
+        this.employee = data;
 
-  saveEmployee() {
-    this.employeeService.createEmployee(this.employee).subscribe( data => {
-      console.log(data);
-      this.goToEmployeeList();
-    },
-    error => console.log(error));
-  }
+      }, error => console.log(error));
+    }
 
-  goToEmployeeList() {
-    this.router.navigate(['/employees']);
-  }
+
 
   onSubmit() {
     console.log(this.employee);
-    this.saveEmployee();
+
   }
 
 }
